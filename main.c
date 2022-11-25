@@ -25,7 +25,7 @@ int main(void)
     fclose(fptr);
 
     /* Execute each method */
-    for(int i = 0; i < 2; i++)
+    for(int i = 0; i < 3; i++)
         execute(page_num, frame_num, refstr_size, refstr, i);
     
     //execute_ws();
@@ -64,8 +64,7 @@ void execute(int page_num, int frame_num, int refstr_size, int *refstr, int meth
                 replace = lru(refstr_size, frame_num, time, refstr, mem_state);
             
             else
-                printf("method 2\n");
-                //replace = lfu();
+                replace = lfu(refstr_size, frame_num, time, refstr, mem_state);
 
             mem_state[replace][time] = refstr[time];
             fault[time] = 1;
@@ -93,7 +92,7 @@ void execute(int page_num, int frame_num, int refstr_size, int *refstr, int meth
             pgfault_num++;
     }
 
-    printf("(Total Page Fault: %d)\n", pgfault_num);
+    printf("(Number of Page Faults: %d)\n", pgfault_num);
     print_result(refstr_size, frame_num, refstr, fault, mem_state);
     
     /* Free memory */

@@ -1,5 +1,6 @@
 #include "pgrplc.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int min(int refstr_size, int frame_num, int time, int *refstr, int **mem_state)
 {
@@ -48,7 +49,67 @@ int lru(int refstr_size, int frame_num, int time, int *refstr, int **mem_state)
 
 int lfu(int refstr_size, int frame_num, int time, int *refstr, int **mem_state)
 {
-    
+    int *ref_count = (int *)calloc(sizeof(int), frame_num);
+    int *rcnt_ref = (int *)calloc(sizeof(int), frame_num);
+
+    for(int i = 0; i < frame_num; i++)
+    {
+        for(int j = time - 1; j >= 0; j--)
+        {
+            if(refstr[j] == mem_state[i][time])
+            {
+                if(rcnt_ref[i] == 0)
+                    rcnt_ref[i] = time - j;
+
+                ref_count[i]++;
+            }
+        }
+    }
+
+    int min = 1000, minidx;
+    for(int i = 0; i < frame_num; i++)
+    {
+        if(ref_count[i] < min)
+        {
+            min = ref_count[i];
+            minidx = i;
+        }
+    }
+
+    int tie_count = 0;
+    int *tie = (int *)calloc(sizeof(int), frame_num);
+    for(int i = 0; i < frame_num; i++)
+    {
+        if(ref_count[i] == min)
+        {
+            tie[i] = 1;
+            tie_count++;
+        }
+    }
+
+    if(tie_count != 1)
+    {
+        int max = -1, maxidx;
+        for(int i = 0; i < frame_num; i++)
+        {
+            if(tie[i] == 1 && rcnt_ref[i] > max)
+            {
+                max = rcnt_ref[i];
+                maxidx = i;
+            }
+        }
+        free(ref_count);
+        free(rcnt_ref);
+        free(tie);
+
+        return maxidx;
+    }
+
+    free(ref_count);
+    free(rcnt_ref);
+    free(tie);
+
+    return minidx;
 }
 
 int ws(int refstr_size, int window_size, int time, int *refstr, int **mem_state)
