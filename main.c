@@ -4,6 +4,7 @@
 #include "pgrplc.h"
 
 void execute(int page_num, int frame_num, int refstr_size, int *refstr, int method);
+void check_input(int page_num, int frame_num, int window_size, int refstr_size, int *refstr);
 int **create_arr(int frame_num, int refstr_size);
 int isempty(int **mem_state, int frame_num, int time);
 int ishit(int **mem_state, int frame_num, int time, int ref);
@@ -23,6 +24,8 @@ int main(void)
         fscanf(fptr, "%d", &refstr[i]);
 
     fclose(fptr);
+
+    check_input(page_num, frame_num, window_size, refstr_size, refstr);
 
     /* Execute each method */
     for(int i = 0; i < 3; i++)
@@ -100,6 +103,27 @@ void execute(int page_num, int frame_num, int refstr_size, int *refstr, int meth
         free(mem_state[i]);
     free(mem_state);
     free(fault);
+
+    return;
+}
+
+void check_input(int page_num, int frame_num, int window_size, int refstr_size, int *refstr)
+{
+    if(page_num > 100 || frame_num > 20 || window_size > 100 || 
+    refstr_size > 1000)
+    {
+        fprintf(stderr, "Input is Not Valid\n");
+        exit(1);
+    }
+    
+    for(int i = 0; i < refstr_size; i++)
+    {
+        if(refstr[i] > page_num || refstr[i] < 0)
+        {
+            fprintf(stderr, "Input is Not Valid\n");
+            exit(1);
+        }
+    }
 
     return;
 }
