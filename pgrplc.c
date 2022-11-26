@@ -112,12 +112,36 @@ int lfu(int refstr_size, int frame_num, int time, int *refstr, int **mem_state)
     return minidx;
 }
 
-int ws(int refstr_size, int window_size, int time, int *refstr, int **mem_state)
+int ws(int refstr_size, int window_size, int page_num, int time, int *refstr, int **mem_state)
 {
+    int *working_set = (int *)malloc(window_size * sizeof(int));
+    for(int i = 0; i < window_size; i++)
+        working_set[i] = refstr[time - i - 1];
     
+    for(int i = 0; i < page_num; i++)
+    {
+        if(mem_state[i][time] == -1)
+            continue;
+            
+        int itis = 0;
+        for(int j = 0; j < window_size; j++)
+        {
+            if(mem_state[i][time] == working_set[j])
+                itis = 1;
+        }
+
+        if(itis == 0)
+        {
+            free(working_set);
+            return i;
+        }
+    }
+
+    free(working_set);
+    return -1;
 }
 
-void print_result(int refstr_size, int frame_num, int *refstr, int *fault, int **mem_state)
+void print_result(int refstr_size, int frame_num, int *refstr, int *fault, int *P, int *Q, int **mem_state)
 {
     for(int i = 0; i < refstr_size; i++)
         printf("=====");
@@ -179,6 +203,29 @@ void print_result(int refstr_size, int frame_num, int *refstr, int *fault, int *
             printf(" %2s ", "-");
     }
     printf("\n");
+
+    if(P != NULL)
+    {
+        printf("%-12s", "P");
+        for(int i = 0; i < refstr_size; i++)
+        {
+            if(P[i] == -1)
+                printf(" %2s ", "-");
+            else
+                printf(" %2d ", P[i]);
+        }
+        printf("\n");
+
+        printf("%-12s", "Q");
+        for(int i = 0; i < refstr_size; i++)
+        {
+            if(Q[i] == -1)
+                printf(" %2s ", "-");
+            else
+                printf(" %2d ", Q[i]);
+        }
+        printf("\n");
+    }
     
     for(int i = 0; i < refstr_size; i++)
         printf("=====");
