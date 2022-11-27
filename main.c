@@ -155,7 +155,7 @@ void execute_ws(int page_num, int window_size, int refstr_size, int *refstr)
             mem_state[Q[time]][time] = -1;
     }
 
-    printf("\nWorking Set\n");
+    printf("\nWS\n");
 
     int pgfault_num = 0;
     for(int i = 0; i < refstr_size; i++)
@@ -181,7 +181,7 @@ void execute_ws(int page_num, int window_size, int refstr_size, int *refstr)
 void check_input(int page_num, int frame_num, int window_size, int refstr_size, int *refstr)
 {
     if(page_num > 100 || frame_num > 20 || window_size > 100 || 
-    refstr_size > 1000)
+    refstr_size > 1000 || window_size > refstr_size)
     {
         fprintf(stderr, "Input is Not Valid\n");
         exit(1);
