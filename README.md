@@ -1,4 +1,4 @@
-<div align="center"><h1>운영체제 [SWE3004_41]</h1>
+<div align="center"><h1>운영체제 (Operating System)</h1>
 <h3>PROJECT 3</h3>
 <h4> Virtual Memory Management 기법 구현</h4></div>
 
@@ -35,6 +35,7 @@ r1 r2 r3 ··· rk
 	- Page 번호는 0번부터 시작
 
 
+<br>
 
 ## 제출물 내 각 파일
 
@@ -46,7 +47,7 @@ r1 r2 r3 ··· rk
 - Makefile
 - input.txt
 
-
+<br>
 
 ## 설계 · 구현 내용
 
@@ -59,7 +60,7 @@ Project 3는 Virtual Memory Management 기법을 구현하는 것이 목표입�
 - LFU
 - WS
 
-
+<br>
 
 ### MIN
 
@@ -67,13 +68,14 @@ Project 3는 Virtual Memory Management 기법을 구현하는 것이 목표입�
 
 본 프로젝트에서는 tie-breaking으로 가장 page 번호가 낮은 page를 선택합니다.
 
+<br>
 
 
 ### LRU(Least Recently Used)
 
 현재 시각을 기준으로 가장 오랫동안 reference되지 않은 page를 선택합니다.
 
-
+<br>
 
 ### LFU(Least Frequently Used)
 
@@ -81,7 +83,7 @@ Project 3는 Virtual Memory Management 기법을 구현하는 것이 목표입�
 
 Tie-breaking으로 LRU 기법을 사용합니다.
 
-
+<br>
 
 ### WS(Working Set)
 
@@ -89,7 +91,7 @@ Tie-breaking으로 LRU 기법을 사용합니다.
 
 Variable Allocation 기법의 일종이므로 메모리에 load된 page의 개수는 달라질 수 있습니다.
 
-
+<br>
 
 ## Variable
 
@@ -116,7 +118,7 @@ int *working_set //Working Set에 들어간 page 번호를 저장하는 배열�
 int **mem_state //Memory State를 시간과 frame number에 따라 2차원으로 저장하는 배열입니다
 ```
 
-
+<br>
 
 ## Function
 
@@ -136,7 +138,7 @@ void execute(int frame_num, int refstr_size, int *refstr, int method);
 
 - 실행결과를 출력합니다.
 
-
+<br>
 
 ```c
 void execute_ws(int page_num, int window_size, int refstr_size, int *refstr);
@@ -147,7 +149,7 @@ void execute_ws(int page_num, int window_size, int refstr_size, int *refstr);
 - Working Set 기법을 통해 메모리에서 제거해야할 page를 제거합니다.
 - 실행결과를 출력합니다.
 
-
+<br>
 
 ```c
 void check_input(int page_num, int frame_num, int window_size, int refstr_size, int *refstr);
@@ -158,6 +160,7 @@ void check_input(int page_num, int frame_num, int window_size, int refstr_size, 
 - Input이 유효하지 않을 경우 에러메시지를 출력하고 프로그램을 종료합니다.
 
 
+<br>
 
 ```c
 int **create_arr(int frame_num, int refstr_size);
@@ -168,6 +171,7 @@ int **create_arr(int frame_num, int refstr_size);
 - 2차원 배열의 포인터를 반환합니다.
 
 
+<br>
 
 ```c
 int isempty(int **mem_state, int frame_num, int time);
@@ -177,6 +181,7 @@ int isempty(int **mem_state, int frame_num, int time);
 - 비어있는 frame이 있으면 해당 frame number를, 없으면 -1을 반환합니다.
 
 
+<br>
 
 ```c
 int ishit(int **mem_state, int frame_num, int time, int ref);
@@ -186,6 +191,7 @@ int ishit(int **mem_state, int frame_num, int time, int ref);
 - 메모리에 있으면 1을, 없으면 0을 반환합니다.
 
 
+<br>
 
 ### pgrplc.c
 
@@ -196,7 +202,7 @@ int min(int refstr_size, int frame_num, int time, int *refstr, int **mem_state);
 - MIN 기법을 구현한 함수입니다.
 - Replace할 page number를 반환합니다.
 
-
+<br>
 
 ```c
 int lru(int refstr_size, int frame_num, int time, int *refstr, int **mem_state);
@@ -205,7 +211,7 @@ int lru(int refstr_size, int frame_num, int time, int *refstr, int **mem_state);
 - LRU 기법을 구현한 함수입니다.
 - Replace할 page number를 반환합니다.
 
-
+<br>
 
 ```c
 int lfu(int refstr_size, int frame_num, int time, int *refstr, int **mem_state);
@@ -214,7 +220,7 @@ int lfu(int refstr_size, int frame_num, int time, int *refstr, int **mem_state);
 - LFU 기법을 구현한 함수입니다.
 - Replace할 page number를 반환합니다.
 
-
+<br>
 
 ```c
 int ws(int refstr_size, int window_size, int page_num, int time, int *refstr, int **mem_state);
@@ -223,7 +229,7 @@ int ws(int refstr_size, int window_size, int page_num, int time, int *refstr, in
 - Working Set 기법을 구현한 함수입니다.
 - Replace할 page가 있다면 해당 page의 page number를, 없다면 -1을 반환합니다.
 
-
+<br>
 
 ```c
 void print_result(int refstr_size, int frame_num, int *refstr, int *fault, int *P, int *Q, int **mem_state)
@@ -233,32 +239,34 @@ void print_result(int refstr_size, int frame_num, int *refstr, int *fault, int *
 - <u>P</u>가 NULL일 경우 P, Q는 출력하지 않습니다.
 - P, Q는 Working Set 기법에서만 출력합니다.
 
-
+<br>
 
 ## 실행결과
 
 ### Input
 
-![스크린샷 2022-11-29 오전 3.52.24](/Users/space/Library/Application Support/typora-user-images/스크린샷 2022-11-29 오전 3.52.24.png)
-
-
+<img width="267" alt="스크린샷 2022-11-29 오전 3 52 24" src="https://user-images.githubusercontent.com/117765232/204370023-d4d97daa-b964-4e96-a468-910d6187d89c.png">
 
 ### Output
 
-![스크린샷 2022-11-29 오전 3.53.21](/Users/space/Library/Application Support/typora-user-images/스크린샷 2022-11-29 오전 3.53.21.png)
+<img width="683" alt="스크린샷 2022-11-29 오전 3 53 21" src="https://user-images.githubusercontent.com/117765232/204370105-6341f70d-b044-4ec0-a3ef-667d5b652cac.png">
+
 
 ### Input
 
-![스크린샷 2022-11-29 오전 4.03.33](/Users/space/Downloads/스크린샷 2022-11-29 오전 4.03.33.png)
+<img width="267" alt="스크린샷 2022-11-29 오전 4 03 33" src="https://user-images.githubusercontent.com/117765232/204370142-bb130b53-e541-412c-9f05-dec93ca99e7f.png">
+
 
 ### Output
 
-![스크린샷 2022-11-29 오전 4.04.37](/Users/space/Library/Application Support/typora-user-images/스크린샷 2022-11-29 오전 4.04.37.png)
+<img width="681" alt="스크린샷 2022-11-29 오전 4 04 37" src="https://user-images.githubusercontent.com/117765232/204370185-4f18aeab-ff0e-4f83-b18e-d7b9c975247c.png">
+
 
 ### Input
 
-![스크린샷 2022-11-29 오전 4.20.21](/Users/space/Library/Application Support/typora-user-images/스크린샷 2022-11-29 오전 4.20.21.png)
+<img width="229" alt="스크린샷 2022-11-29 오전 4 20 21" src="https://user-images.githubusercontent.com/117765232/204370227-7bafc5b4-dab2-4c12-89c7-86c207a63f53.png">
+
 
 ### Output
 
-![스크린샷 2022-11-29 오전 4.20.53](/Users/space/Library/Application Support/typora-user-images/스크린샷 2022-11-29 오전 4.20.53.png)
+<img width="594" alt="스크린샷 2022-11-29 오전 4 20 53" src="https://user-images.githubusercontent.com/117765232/204370247-13bc5ca8-daf0-4271-917a-78f7c3c05dd8.png">
