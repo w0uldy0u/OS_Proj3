@@ -5,6 +5,9 @@
 int min(int refstr_size, int frame_num, int time, int *refstr, int **mem_state)
 {
     int max = -1, maxidx;
+    if(time == refstr_size - 1)
+        return 0;
+
     for(int i = 0; i < frame_num; i++)
     {
         for(int j = time + 1; j < refstr_size; j++)
